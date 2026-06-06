@@ -9,7 +9,6 @@
 *{margin:0;padding:0;box-sizing:border-box}
 :root{
   --bg:#0a0a0f;--bg2:#111118;--bg3:#1a1a24;
-  /* Kecerahan --muted dinaikkan sedikit agar rasio kontras lebih baik dan mata tidak cepat lelah */
   --text:#f0eefc;--muted:#a1a1b2;--accent:#7f77dd;
   --accent2:#5dcaa5;--border:rgba(127,119,221,0.15);
   --card:rgba(255,255,255,0.03);
@@ -18,16 +17,27 @@ html{scroll-behavior:smooth}
 body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;font-size:16px;line-height:1.7;overflow-x:hidden}
 .container{max-width:900px;margin:0 auto;padding:0 1.5rem}
 
+/* ─── LANGUAGE TOGGLE SYSTEM ─── */
+/* Menyembunyikan elemen berdasarkan atribut lang di tag <html> */
+html[lang="id"] .en { display: none !important; }
+html[lang="en"] .id { display: none !important; }
+
 /* ─── NAV ─── */
 nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:1rem 0;border-bottom:0.5px solid var(--border);backdrop-filter:blur(12px);background:rgba(10,10,15,0.9)}
-.nav-inner{max-width:900px;margin:0 auto;padding:0 1.5rem;display:flex;align-items:center;justify-content:space-between;gap:1rem}
-.nav-logo{font-family:'Syne',sans-serif;font-weight:800;font-size:1.1rem;letter-spacing:-0.02em;color:var(--text);flex-shrink:0}
+.nav-inner{max-width:900px;margin:0 auto;padding:0 1.5rem;display:flex;align-items:center;gap:1.5rem}
+.nav-logo{font-family:'Syne',sans-serif;font-weight:800;font-size:1.1rem;letter-spacing:-0.02em;color:var(--text);flex-shrink:0;margin-right:auto}
 .nav-logo span{color:var(--accent)}
 .nav-links{display:flex;gap:1.5rem;flex-wrap:wrap}
 .nav-links a{color:var(--muted);text-decoration:none;font-size:0.85rem;font-weight:500;letter-spacing:0.02em;transition:color 0.2s}
 .nav-links a:hover{color:var(--text)}
 
-/* hamburger – hidden on desktop. Z-index dinaikkan agar tidak tertutup drawer */
+/* Language Switcher Button UI */
+.lang-switch{display:flex;align-items:center;gap:8px;background:rgba(255,255,255,0.04);border:0.5px solid rgba(255,255,255,0.1);padding:4px 8px;border-radius:100px}
+.lang-btn{background:none;border:none;color:var(--muted);font-family:'DM Sans',sans-serif;font-size:0.75rem;font-weight:600;cursor:pointer;padding:4px 8px;border-radius:100px;transition:all 0.2s}
+.lang-btn.active{background:var(--accent);color:#fff}
+.lang-btn:hover:not(.active){color:var(--text)}
+
+/* hamburger */
 .nav-toggle{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:4px;background:none;border:none;z-index:102;position:relative}
 .nav-toggle span{display:block;width:22px;height:2px;background:var(--text);border-radius:2px;transition:all 0.3s}
 .nav-toggle.open span:nth-child(1){transform:translateY(7px) rotate(45deg)}
@@ -140,7 +150,6 @@ h2{font-family:'Syne',sans-serif;font-size:clamp(1.6rem,4vw,2rem);font-weight:70
 footer{border-top:0.5px solid var(--border);padding:2rem 0;text-align:center;color:var(--muted);font-size:0.78rem}
 
 /* ─── REVEAL ─── */
-/* Transform ditambahkan ke 35px agar efek animasi scroll lebih terasa dramatis */
 .reveal{opacity:0;transform:translateY(35px);transition:opacity 0.55s ease,transform 0.55s ease}
 .reveal.visible{opacity:1;transform:none}
 
@@ -153,11 +162,9 @@ footer{border-top:0.5px solid var(--border);padding:2rem 0;text-align:center;col
   section{padding:4.5rem 0}
   #hero{padding-top:7.5rem;padding-bottom:4rem}
 
-  /* nav: show hamburger, hide links */
   .nav-links{display:none}
   .nav-toggle{display:flex}
 
-  /* mobile drawer - Z-index diatur ke 101, will-change ditambahkan untuk performa animasi GPU */
   .nav-drawer{
     display:block;
     position:fixed;
@@ -186,28 +193,20 @@ footer{border-top:0.5px solid var(--border);padding:2rem 0;text-align:center;col
   }
   .nav-drawer-links a:hover{color:var(--accent)}
 
-  /* about: stack vertically, stats first on mobile */
   .about-grid{
     grid-template-columns:1fr;
     gap:2rem;
   }
   .about-stats{order:-1;grid-template-columns:repeat(2,1fr)}
 
-  /* exp: stack period below company */
   .exp-top{flex-direction:column;gap:0.5rem}
   .exp-right{text-align:left}
 
-  /* projects: full width, header stacks */
   .proj-header{flex-direction:column;gap:0.75rem}
   .proj-link-btn{align-self:flex-start}
 
-  /* stack: 2 columns */
   .stack-groups{grid-template-columns:repeat(2,1fr)}
-
-  /* contact: stack */
   .contact-grid{grid-template-columns:1fr;gap:2rem}
-
-  /* hero chips: smaller */
   .hero-chip{font-size:0.73rem}
 }
 
@@ -216,36 +215,19 @@ footer{border-top:0.5px solid var(--border);padding:2rem 0;text-align:center;col
   .container{padding:0 1rem}
   section{padding:3.75rem 0}
   #hero{padding-top:6.5rem;padding-bottom:3rem}
-
   h1{font-size:clamp(2rem,9vw,2.6rem)}
-
-  /* nav */
-  .nav-inner{padding:0 1rem}
-
-  /* hero */
+  .nav-inner{padding:0 1rem;gap:1rem;}
   .hero-highlights{gap:6px}
   .hero-chip{padding:4px 11px;font-size:0.71rem}
   .hero-cta{flex-direction:column;gap:0.6rem}
   .btn{width:100%;justify-content:center}
-
-  /* about stats: 2x2 grid */
   .about-stats{grid-template-columns:1fr 1fr}
   .stat-num{font-size:1.5rem}
-
-  /* exp card padding */
   .exp-card{padding:1.4rem 1.25rem 1.25rem}
   .exp-company{font-size:1.05rem}
-
-  /* project card */
   .proj-card{padding:1.4rem 1.25rem}
-
-  /* stack: single column */
   .stack-groups{grid-template-columns:1fr}
-
-  /* contact link: smaller sub text */
   .cl-sub{font-size:0.68rem}
-
-  /* drawer links smaller */
   .nav-drawer-links a{font-size:1.4rem}
 }
 
@@ -260,24 +242,31 @@ footer{border-top:0.5px solid var(--border);padding:2rem 0;text-align:center;col
 
 <div class="nav-drawer" id="navDrawer">
   <div class="nav-drawer-links">
-    <a href="#about" onclick="closeDrawer()">About</a>
-    <a href="#experience" onclick="closeDrawer()">Experience</a>
-    <a href="#projects" onclick="closeDrawer()">Projects</a>
+    <a href="#about" onclick="closeDrawer()"><span class="id">Tentang</span><span class="en">About</span></a>
+    <a href="#experience" onclick="closeDrawer()"><span class="id">Pengalaman</span><span class="en">Experience</span></a>
+    <a href="#projects" onclick="closeDrawer()"><span class="id">Proyek</span><span class="en">Projects</span></a>
     <a href="#stack" onclick="closeDrawer()">Stack</a>
-    <a href="#contact" onclick="closeDrawer()">Contact</a>
+    <a href="#contact" onclick="closeDrawer()"><span class="id">Kontak</span><span class="en">Contact</span></a>
   </div>
 </div>
 
 <nav>
   <div class="nav-inner">
     <div class="nav-logo">Faiz<span>.</span></div>
+    
     <div class="nav-links">
-      <a href="#about">About</a>
-      <a href="#experience">Experience</a>
-      <a href="#projects">Projects</a>
+      <a href="#about"><span class="id">Tentang</span><span class="en">About</span></a>
+      <a href="#experience"><span class="id">Pengalaman</span><span class="en">Experience</span></a>
+      <a href="#projects"><span class="id">Proyek</span><span class="en">Projects</span></a>
       <a href="#stack">Stack</a>
-      <a href="#contact">Contact</a>
+      <a href="#contact"><span class="id">Kontak</span><span class="en">Contact</span></a>
     </div>
+
+    <div class="lang-switch">
+      <button class="lang-btn active" onclick="setLanguage('id')" id="btn-id">ID</button>
+      <button class="lang-btn" onclick="setLanguage('en')" id="btn-en">EN</button>
+    </div>
+
     <button class="nav-toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false">
       <span></span><span></span><span></span>
     </button>
@@ -286,49 +275,66 @@ footer{border-top:0.5px solid var(--border);padding:2rem 0;text-align:center;col
 
 <section id="hero">
   <div class="container">
-    <div class="hero-tag">Open to opportunities</div>
+    <div class="hero-tag">
+      <span class="id">Terbuka untuk peluang baru</span>
+      <span class="en">Open to opportunities</span>
+    </div>
     <h1>Faiz Ihsan Akram<br><span class="accent">Fullstack Developer.</span></h1>
-    <p class="hero-desc">Membangun aplikasi web end-to-end — dari arsitektur database dan REST API hingga antarmuka pengguna. Berpengalaman mengerjakan sistem untuk instansi pemerintah dan klien bisnis.</p>
+    <p class="hero-desc">
+      <span class="id">Membangun aplikasi web end-to-end — dari arsitektur database dan REST API hingga antarmuka pengguna. Berpengalaman mengerjakan sistem untuk instansi pemerintah dan klien bisnis.</span>
+      <span class="en">Building end-to-end web applications — from database architecture and REST APIs to user interfaces. Experienced in developing systems for government agencies and business clients.</span>
+    </p>
     <div class="hero-highlights">
-      <div class="hero-chip"><b>Laravel</b> · Backend Specialist</div>
-      <div class="hero-chip"><b>2</b> Government Systems</div>
-      <div class="hero-chip"><b>4+</b> Professional & Academic Projects</div>
+      <div class="hero-chip"><b>Laravel</b> · <span class="id">Backend Utama</span><span class="en">Backend Specialist</span></div>
+      <div class="hero-chip"><b>2</b> <span class="id">Sistem Pemerintahan</span><span class="en">Government Systems</span></div>
+      <div class="hero-chip"><b>4+</b> <span class="id">Proyek Profesional & Akademik</span><span class="en">Professional & Academic Projects</span></div>
       <div class="hero-chip">Malang, Indonesia</div>
     </div>
     <div class="hero-cta">
-      <a href="#experience" class="btn btn-primary">Lihat Pengalaman</a>
-      <a href="#contact" class="btn btn-outline">Hubungi Saya</a>
+      <a href="#experience" class="btn btn-primary">
+        <span class="id">Lihat Pengalaman</span><span class="en">View Experience</span>
+      </a>
+      <a href="#contact" class="btn btn-outline">
+        <span class="id">Hubungi Saya</span><span class="en">Contact Me</span>
+      </a>
     </div>
   </div>
 </section>
 
 <section id="about">
   <div class="container reveal">
-    <div class="section-label">About</div>
-    <h2>Tentang Saya</h2>
+    <div class="section-label"><span class="id">Tentang</span><span class="en">About</span></div>
+    <h2><span class="id">Tentang Saya</span><span class="en">About Me</span></h2>
     <div class="divider"></div>
     <div class="about-grid">
       <div class="about-text">
-        <p>Saya Faiz, <strong>Fullstack Developer</strong> asal Kota Bekasi domisili Kota Malang dengan pengalaman membangun sistem web skala nyata — mulai dari sistem informasi pemerintahan, platform e-commerce, hingga sistem parkir berbasis computer vision.</p>
-        <p>Keahlian utama saya ada di ekosistem <strong>Laravel</strong> untuk backend, dengan kemampuan frontend menggunakan <strong>React.js</strong> dan <strong>Vue.js</strong>. Saya terbiasa bekerja dalam siklus development penuh: dari perancangan database, implementasi API, pengembangan UI, hingga deployment.</p>
-        <p>Saya pernah berkolaborasi langsung dengan <strong>stakeholder pemerintah daerah</strong> dan klien bisnis, memahami cara menerjemahkan kebutuhan non-teknis menjadi solusi yang fungsional dan maintainable.</p>
+        <span class="id">
+          <p>Saya Faiz, <strong>Fullstack Developer</strong> asal Kota Bekasi domisili Kota Malang dengan pengalaman membangun sistem web skala nyata — mulai dari sistem informasi pemerintahan, platform e-commerce, hingga sistem parkir berbasis computer vision.</p>
+          <p>Keahlian utama saya ada di ekosistem <strong>Laravel</strong> untuk backend, dengan kemampuan frontend menggunakan <strong>React.js</strong> dan <strong>Vue.js</strong>. Saya terbiasa bekerja dalam siklus development penuh: dari perancangan database, implementasi API, pengembangan UI, hingga deployment.</p>
+          <p>Saya pernah berkolaborasi langsung dengan <strong>stakeholder pemerintah daerah</strong> dan klien bisnis, memahami cara menerjemahkan kebutuhan non-teknis menjadi solusi yang fungsional dan maintainable.</p>
+        </span>
+        <span class="en">
+          <p>I am Faiz, a <strong>Fullstack Developer</strong> originally from Bekasi and currently residing in Malang, with experience building real-world web systems — ranging from government information systems and e-commerce platforms to computer vision-based parking systems.</p>
+          <p>My core expertise lies within the <strong>Laravel</strong> ecosystem for backend development, complemented by frontend capabilities using <strong>React.js</strong> and <strong>Vue.js</strong>. I am accustomed to working across the entire development lifecycle: from database architecture and API implementation to UI development and deployment.</p>
+          <p>I have collaborated directly with <strong>local government stakeholders</strong> and business clients, demonstrating a strong ability to translate non-technical requirements into functional, maintainable software solutions.</p>
+        </span>
       </div>
       <div class="about-stats">
         <div class="stat-card">
           <div class="stat-num">4+</div>
-          <div class="stat-label">Professional & Academic Projects</div>
+          <div class="stat-label"><span class="id">Proyek Profesional & Akademik</span><span class="en">Professional & Academic Projects</span></div>
         </div>
         <div class="stat-card">
           <div class="stat-num">2</div>
-          <div class="stat-label">Government Systems Built</div>
+          <div class="stat-label"><span class="id">Sistem Pemerintahan</span><span class="en">Government Systems Built</span></div>
         </div>
         <div class="stat-card">
           <div class="stat-num">10+</div>
-          <div class="stat-label">Technologies Used</div>
+          <div class="stat-label"><span class="id">Teknologi Dikuasai</span><span class="en">Technologies Mastered</span></div>
         </div>
         <div class="stat-card">
           <div class="stat-num">S1</div>
-          <div class="stat-label">Ilmu Komputer, Universitas Brawijaya</div>
+          <div class="stat-label"><span class="id">Ilmu Komputer, Universitas Brawijaya</span><span class="en">Computer Science, Universitas Brawijaya</span></div>
         </div>
       </div>
     </div>
@@ -337,26 +343,36 @@ footer{border-top:0.5px solid var(--border);padding:2rem 0;text-align:center;col
 
 <section id="experience">
   <div class="container reveal">
-    <div class="section-label">Experience</div>
-    <h2>Pengalaman profesional</h2>
-    <p class="section-subtitle">Tiga posisi fullstack — dari magang di software house hingga freelance langsung dengan klien pemerintah dan bisnis.</p>
+    <div class="section-label"><span class="id">Pengalaman</span><span class="en">Experience</span></div>
+    <h2><span class="id">Pengalaman Profesional</span><span class="en">Professional Experience</span></h2>
+    <p class="section-subtitle">
+      <span class="id">Tiga posisi fullstack — dari magang di software house hingga freelance langsung dengan klien pemerintah dan bisnis.</span>
+      <span class="en">Three fullstack roles — spanning from a software house internship to direct freelance engagements with government and business clients.</span>
+    </p>
     <div class="exp-list">
 
       <div class="exp-card">
         <div class="exp-top">
           <div class="exp-left">
-            <div class="exp-company">Pemerintah Kab. Jombang</div>
+            <div class="exp-company"><span class="id">Pemerintah Kab. Jombang</span><span class="en">Jombang Regency Government</span></div>
             <div class="exp-role">Freelance Fullstack Developer</div>
           </div>
           <div class="exp-right">
-            <div class="exp-period">April – Juni 2026</div>
+            <div class="exp-period"><span class="id">April – Juni 2026</span><span class="en">April – June 2026</span></div>
             <div class="exp-location">Remote</div>
           </div>
         </div>
         <ul class="exp-bullets">
-          <li>Membangun sistem SIPERU dari nol menggunakan <strong style="color:var(--text);font-weight:500">Express.js</strong> dan MySQL untuk memecahkan masalah kalkulasi kebutuhan guru PNS/Non-PNS di seluruh sekolah Kabupaten Jombang.</li>
-          <li>Memigrasi proses pengumpulan indikator mutu sekolah yang awalnya berbasis kertas menjadi sistem input digital berbasis web, menyatukannya ke dalam satu database terpusat.</li>
-          <li>Menyediakan fitur pencarian kebutuhan guru yang transparan dan dapat diakses publik/calon guru secara real-time tanpa perlu konfirmasi manual ke masing-masing sekolah.</li>
+          <span class="id">
+            <li>Membangun sistem SIPERU dari nol menggunakan <strong style="color:var(--text);font-weight:500">Express.js</strong> dan MySQL untuk memecahkan masalah kalkulasi kebutuhan guru PNS/Non-PNS di seluruh sekolah Kabupaten Jombang.</li>
+            <li>Memigrasi proses pengumpulan indikator mutu sekolah yang awalnya berbasis kertas menjadi sistem input digital berbasis web, menyatukannya ke dalam satu database terpusat.</li>
+            <li>Menyediakan fitur pencarian kebutuhan guru yang transparan dan dapat diakses publik/calon guru secara real-time tanpa perlu konfirmasi manual ke masing-masing sekolah.</li>
+          </span>
+          <span class="en">
+            <li>Architected and developed the SIPERU system from scratch using <strong style="color:var(--text);font-weight:500">Express.js</strong> and MySQL to automate the calculation of civil servant and non-civil servant teacher requirements across all schools in Jombang Regency.</li>
+            <li>Digitized the paper-based data collection process for school quality indicators into a centralized, web-based input system to prevent data loss and streamline reporting.</li>
+            <li>Implemented a transparent, real-time teacher requirement search portal accessible to the public, eliminating the need for manual inquiries to individual schools.</li>
+          </span>
         </ul>
         <div class="exp-chips">
           <span class="chip">Express.js</span>
@@ -374,14 +390,21 @@ footer{border-top:0.5px solid var(--border);padding:2rem 0;text-align:center;col
             <div class="exp-role">Intern Fullstack Developer</div>
           </div>
           <div class="exp-right">
-            <div class="exp-period">Agustus – Desember 2025</div>
+            <div class="exp-period"><span class="id">Agustus – Desember 2025</span><span class="en">August – December 2025</span></div>
             <div class="exp-location">Malang, Indonesia · On-site</div>
           </div>
         </div>
         <ul class="exp-bullets">
-          <li>Berhasil mendigitalisasi proses manual pembuatan peta jabatan dari format Excel konvensional menjadi sistem otomatisasi pohon hierarki organisasi (SIANJAB-ABK) untuk Pemerintah Kabupaten Semarang.</li>
-          <li>Merancang arsitektur database relasional (PostgreSQL) yang fleksibel untuk memetakan berbagai jenis tingkatan jabatan (Fungsional, Pelaksana, Struktural) meskipun dokumen spesifikasi awal dari klien memiliki keterbatasan data.</li>
-          <li>Mengembangkan modul entri data dinamis dan fitur verifikasi bertingkat untuk verifikator menggunakan <strong style="color:var(--text);font-weight:500">Laravel</strong> dan <strong style="color:var(--text);font-weight:500">Filament PHP</strong>, serta menyediakan fitur ekspor laporan Informasi Jabatan ke format Excel.</li>
+          <span class="id">
+            <li>Berhasil mendigitalisasi proses manual pembuatan peta jabatan dari format Excel konvensional menjadi sistem otomatisasi pohon hierarki organisasi (SIANJAB-ABK) untuk Pemerintah Kabupaten Semarang.</li>
+            <li>Merancang arsitektur database relasional (PostgreSQL) yang fleksibel untuk memetakan berbagai jenis tingkatan jabatan (Fungsional, Pelaksana, Struktural) meskipun dokumen spesifikasi awal dari klien memiliki keterbatasan data.</li>
+            <li>Mengembangkan modul entri data dinamis dan fitur verifikasi bertingkat untuk verifikator menggunakan <strong style="color:var(--text);font-weight:500">Laravel</strong> dan <strong style="color:var(--text);font-weight:500">Filament PHP</strong>, serta menyediakan fitur ekspor laporan Informasi Jabatan ke format Excel.</li>
+          </span>
+          <span class="en">
+            <li>Successfully digitized the manual job mapping process from conventional Excel sheets into an automated organizational hierarchy tree system (SIANJAB-ABK) for the Semarang Regency Government.</li>
+            <li>Designed a flexible relational database architecture (PostgreSQL) capable of mapping various job tier classifications (Functional, Implementing, Structural), adapting to initially limited client requirement documentation.</li>
+            <li>Developed dynamic data entry modules and multi-level verification features using <strong style="color:var(--text);font-weight:500">Laravel</strong> and <strong style="color:var(--text);font-weight:500">Filament PHP</strong>, including a precise Excel report export generation feature.</li>
+          </span>
         </ul>
         <div class="exp-chips">
           <span class="chip">Laravel</span>
@@ -398,19 +421,30 @@ footer{border-top:0.5px solid var(--border);padding:2rem 0;text-align:center;col
             <div class="exp-role">Freelance Fullstack Developer</div>
           </div>
           <div class="exp-right">
-            <div class="exp-period">November 2024 – Maret 2025</div>
+            <div class="exp-period"><span class="id">November 2024 – Maret 2025</span><span class="en">November 2024 – March 2025</span></div>
             <div class="exp-location">Remote</div>
           </div>
         </div>
         <ul class="exp-bullets">
-          <li>Merancang dan mengembangkan platform e-commerce kustom dari tahap desain hingga siap rilis menggunakan <strong style="color:var(--text);font-weight:500">Laravel</strong> dan <strong style="color:var(--text);font-weight:500">React.js</strong> guna memangkas biaya komisi platform pihak ketiga (Selesai hingga tahap development sebelum penyesuaian bisnis klien).</li>
-          <li>Membangun dasbor manajemen konten (CMS) yang adaptif untuk mengatur tata letak banner utama dan pengelompokan produk secara dinamis.</li>
-          <li>Mengintegrasikan gerbang pembayaran Midtrans API dan penghitungan ongkos kirim otomatis via RajaOngkir API.</li>
-          <li>Mengimplementasikan Job Queue untuk pemrosesan asinkron, serta Cache dan CDN guna memastikan stabilitas aplikasi saat menangani 500+ pengguna aktif secara bersamaan.</li>
+          <span class="id">
+            <li>Merancang dan mengembangkan platform e-commerce lintas negara (cross-border) kustom dari tahap desain hingga siap rilis menggunakan <strong style="color:var(--text);font-weight:500">Laravel</strong> dan <strong style="color:var(--text);font-weight:500">React.js</strong> guna memangkas biaya komisi platform pihak ketiga.</li>
+            <li>Mengimplementasikan fitur multi-bahasa (English & Indonesia), integrasi multi-mata uang (IDR, MYR, USD, SGD), serta sistem pengiriman logistik internasional ke seluruh dunia.</li>
+            <li>Membangun dasbor manajemen konten (CMS) yang adaptif untuk mengatur tata letak banner utama dan pengelompokan produk secara dinamis.</li>
+            <li>Mengintegrasikan gerbang pembayaran Midtrans API untuk penyelesaian transaksi dan penghitungan ongkos kirim otomatis via RajaOngkir API.</li>
+            <li>Mengimplementasikan Job Queue untuk pemrosesan asinkron, serta Cache dan CDN guna memastikan stabilitas aplikasi saat menangani 500+ pengguna aktif secara bersamaan.</li>
+          </span>
+          <span class="en">
+            <li>Engineered a custom cross-border e-commerce platform from scratch to production-ready using <strong style="color:var(--text);font-weight:500">Laravel</strong> and <strong style="color:var(--text);font-weight:500">React.js</strong>, providing a solution to bypass high third-party platform commission fees.</li>
+            <li>Implemented native multi-language support (EN/ID), multi-currency integration (IDR, MYR, USD, SGD), and a robust global shipping logistics architecture.</li>
+            <li>Built an adaptive Content Management System (CMS) dashboard for dynamic layout configuration of main banners and product categorizations.</li>
+            <li>Integrated Midtrans API for seamless payment gateway settlements and RajaOngkir API for automated domestic and international shipping rate calculations.</li>
+            <li>Optimized backend performance utilizing Job Queues for asynchronous processing, coupled with Cache and CDN configurations, ensuring high availability during peak traffic of 500+ concurrent users.</li>
+          </span>
         </ul>
         <div class="exp-chips">
           <span class="chip">Laravel</span>
           <span class="chip">React.js</span>
+          <span class="chip">Localization & Multi-Currency</span>
           <span class="chip">PostgreSQL</span>
           <span class="chip chip-neutral">Cache & CDN</span>
           <span class="chip chip-neutral">Job Queue</span>
@@ -423,23 +457,29 @@ footer{border-top:0.5px solid var(--border);padding:2rem 0;text-align:center;col
 
 <section id="projects">
   <div class="container reveal">
-    <div class="section-label">Projects</div>
-    <h2>Proyek pilihan</h2>
-    <p class="section-subtitle">Proyek dengan dampak nyata — dari sistem pemerintahan daerah hingga integrasi IoT dan cloud.</p>
+    <div class="section-label"><span class="id">Proyek</span><span class="en">Projects</span></div>
+    <h2><span class="id">Proyek Pilihan</span><span class="en">Selected Projects</span></h2>
+    <p class="section-subtitle">
+      <span class="id">Proyek dengan dampak nyata — dari sistem pemerintahan daerah hingga integrasi IoT dan cloud.</span>
+      <span class="en">Projects with real-world impact — ranging from local government systems to IoT and cloud integrations.</span>
+    </p>
     <div class="projects-grid">
 
       <div class="proj-card featured-proj">
         <div class="proj-header">
           <div class="proj-meta">
             <div class="proj-badge-row">
-              <span class="pbadge pb-gov">Featured</span>
-              <span class="pbadge pb-gov" style="background:rgba(93,202,165,0.08);font-weight:400;text-transform:none;letter-spacing:0;font-size:0.76rem;padding:3px 10px">Government System</span>
+              <span class="pbadge pb-gov"><span class="id">Unggulan</span><span class="en">Featured</span></span>
+              <span class="pbadge pb-gov" style="background:rgba(93,202,165,0.08);font-weight:400;text-transform:none;letter-spacing:0;font-size:0.76rem;padding:3px 10px"><span class="id">Sistem Pemerintahan</span><span class="en">Government System</span></span>
             </div>
-            <div class="proj-title">SIANJAB-ABK Kabupaten Semarang</div>
-            <div class="proj-client">Client: Pemerintah Kabupaten Semarang · via SMARTID</div>
+            <div class="proj-title">SIANJAB-ABK <span class="id">Kabupaten Semarang</span><span class="en">Semarang Regency</span></div>
+            <div class="proj-client">Client: <span class="id">Pemerintah Kabupaten Semarang</span><span class="en">Semarang Regency Government</span> · via SMARTID</div>
           </div>
         </div>
-        <p class="proj-desc">Mendigitalisasi pembuatan peta jabatan dari Excel konvensional ke sistem otomatisasi hierarki organisasi. Arsitektur data dirancang secara fleksibel untuk mengakomodasi keterbatasan dokumen kebutuhan awal, dilengkapi dengan fitur verifikasi dan ekspor laporan yang akurat.</p>
+        <p class="proj-desc">
+          <span class="id">Mendigitalisasi pembuatan peta jabatan dari Excel konvensional ke sistem otomatisasi hierarki organisasi. Arsitektur data dirancang secara fleksibel untuk mengakomodasi keterbatasan dokumen kebutuhan awal, dilengkapi dengan fitur verifikasi dan ekspor laporan yang akurat.</span>
+          <span class="en">Digitized the conventional Excel-based job mapping process into an automated organizational hierarchy system. The robust data architecture accommodated limited initial requirement documents and featured precise multi-level verification and report export functionalities.</span>
+        </p>
         <div class="proj-footer">
           <div class="proj-tags">
             <span class="ptag main">Laravel</span>
@@ -454,14 +494,17 @@ footer{border-top:0.5px solid var(--border);padding:2rem 0;text-align:center;col
         <div class="proj-header">
           <div class="proj-meta">
             <div class="proj-badge-row">
-              <span class="pbadge pb-gov">Featured</span>
-              <span class="pbadge pb-gov" style="background:rgba(93,202,165,0.08);font-weight:400;text-transform:none;letter-spacing:0;font-size:0.76rem;padding:3px 10px">Government System</span>
+              <span class="pbadge pb-gov"><span class="id">Unggulan</span><span class="en">Featured</span></span>
+              <span class="pbadge pb-gov" style="background:rgba(93,202,165,0.08);font-weight:400;text-transform:none;letter-spacing:0;font-size:0.76rem;padding:3px 10px"><span class="id">Sistem Pemerintahan</span><span class="en">Government System</span></span>
             </div>
-            <div class="proj-title">SIPERU – Sistem Informasi Kab. Jombang</div>
-            <div class="proj-client">Client: Pemerintah Kabupaten Jombang · Freelance</div>
+            <div class="proj-title">SIPERU – Sistem Informasi <span class="id">Kab. Jombang</span><span class="en">Jombang Regency</span></div>
+            <div class="proj-client">Client: <span class="id">Pemerintah Kabupaten Jombang</span><span class="en">Jombang Regency Government</span> · Freelance</div>
           </div>
         </div>
-        <p class="proj-desc">Sistem Informasi Perencanaan dan Evaluasi untuk digitalisasi borang kertas dan kalkulasi kebutuhan guru secara otomatis. Dibangun dengan fokus pada sentralisasi data dan menyediakan portal transparansi pencarian guru bagi publik secara real-time.</p>
+        <p class="proj-desc">
+          <span class="id">Sistem Informasi Perencanaan dan Evaluasi untuk digitalisasi borang kertas dan kalkulasi kebutuhan guru secara otomatis. Dibangun dengan fokus pada sentralisasi data dan menyediakan portal transparansi pencarian guru bagi publik secara real-time.</span>
+          <span class="en">A Planning and Evaluation Information System engineered to digitize paper forms and automate teacher requirement calculations. Built with a focus on data centralization, featuring a real-time transparency portal for public teacher availability searches.</span>
+        </p>
         <div class="proj-footer">
           <div class="proj-tags">
             <span class="ptag main">Express.js</span>
@@ -480,11 +523,14 @@ footer{border-top:0.5px solid var(--border);padding:2rem 0;text-align:center;col
               <span class="pbadge pb-iot">IoT · Cloud · Computer Vision</span>
             </div>
             <div class="proj-title">Vision-Based Smart Parking System</div>
-            <div class="proj-client">Proyek Akademik · Web + Hardware + Cloud</div>
+            <div class="proj-client"><span class="id">Proyek Akademik</span><span class="en">Academic Project</span> · Web + Hardware + Cloud</div>
           </div>
-          <a href="https://filkom.ub.ac.id/project/2025/06/vision-based-smart-parking-system/" target="_blank" class="proj-link-btn">Lihat →</a>
+          <a href="https://filkom.ub.ac.id/project/2025/06/vision-based-smart-parking-system/" target="_blank" class="proj-link-btn"><span class="id">Lihat</span><span class="en">View</span> →</a>
         </div>
-        <p class="proj-desc">Sistem deteksi area parkir pintar berbasis IoT dan Computer Vision. Menggunakan ESP32-Cam untuk menangkap kondisi riil, memproses ketersediaan ruang, dan mengirimkan data ke backend API Laravel melalui HTTP POST. Data disajikan secara real-time pada dasbor antarmuka berbasis React.</p>
+        <p class="proj-desc">
+          <span class="id">Sistem deteksi area parkir pintar berbasis IoT dan Computer Vision. Menggunakan ESP32-Cam untuk menangkap kondisi riil, memproses ketersediaan ruang, dan mengirimkan data ke backend API Laravel melalui HTTP POST. Data disajikan secara real-time pada dasbor antarmuka berbasis React.</span>
+          <span class="en">An intelligent parking detection system powered by IoT and Computer Vision. Utilized ESP32-Cam hardware to capture live conditions, process space availability, and transmit data to a Laravel API via HTTP POST. Real-time metrics are visualized on a React-based dashboard.</span>
+        </p>
         <div class="proj-footer">
           <div class="proj-tags">
             <span class="ptag main">Laravel</span>
@@ -507,11 +553,15 @@ footer{border-top:0.5px solid var(--border);padding:2rem 0;text-align:center;col
             <div class="proj-client">Client: canava.co · Freelance</div>
           </div>
         </div>
-        <p class="proj-desc">Platform e-commerce kustom dengan integrasi Midtrans dan RajaOngkir. Dirancang untuk high-traffic menggunakan arsitektur Job Queue, Cache, dan CDN. Proyek diselesaikan hingga fase Production-Ready Development sebagai solusi pemangkasan biaya admin platform pihak ketiga.</p>
+        <p class="proj-desc">
+          <span class="id">Platform e-commerce lintas negara (cross-border) dengan dukungan multi-bahasa (ID/EN), multi-mata uang (IDR, MYR, USD, SGD), serta sistem pengiriman internasional. Dioptimasi menggunakan Job Queue, Cache, dan CDN untuk menangani high-traffic 500+ pengguna aktif secara bersamaan.</span>
+          <span class="en">A cross-border e-commerce platform supporting multiple languages (ID/EN), currencies (IDR, MYR, USD, SGD), and international shipping infrastructure. Highly optimized with Job Queues, Caching, and CDNs to seamlessly handle traffic spikes of 500+ concurrent active users.</span>
+        </p>
         <div class="proj-footer">
           <div class="proj-tags">
             <span class="ptag main">Laravel</span>
             <span class="ptag">React.js</span>
+            <span class="ptag">Localization</span>
             <span class="ptag">PostgreSQL</span>
             <span class="ptag">SEO</span>
           </div>
@@ -525,11 +575,14 @@ footer{border-top:0.5px solid var(--border);padding:2rem 0;text-align:center;col
 <section id="stack">
   <div class="container reveal">
     <div class="section-label">Tech Stack</div>
-    <h2>Teknologi yang saya gunakan</h2>
-    <p class="section-subtitle">Berorientasi pada ekosistem Laravel untuk backend, dengan fleksibilitas di berbagai stack frontend dan database.</p>
+    <h2><span class="id">Teknologi Yang Saya Gunakan</span><span class="en">Technologies I Use</span></h2>
+    <p class="section-subtitle">
+      <span class="id">Berorientasi pada ekosistem Laravel untuk backend, dengan fleksibilitas di berbagai stack frontend dan database.</span>
+      <span class="en">Oriented around the Laravel ecosystem for backend, with flexibility across various frontend and database stacks.</span>
+    </p>
     <div class="stack-groups">
       <div class="stack-group stack-featured-group">
-        <div class="stack-group-title">⭐ Backend Utama</div>
+        <div class="stack-group-title">⭐ <span class="id">Backend Utama</span><span class="en">Core Backend</span></div>
         <span class="tag hl">Laravel</span>
         <span class="tag hl">Filament PHP</span>
         <span class="tag hl">REST API</span>
@@ -569,13 +622,22 @@ footer{border-top:0.5px solid var(--border);padding:2rem 0;text-align:center;col
 
 <section id="contact">
   <div class="container reveal">
-    <div class="section-label">Contact</div>
-    <h2>Mari berkolaborasi</h2>
-    <p class="section-subtitle">Terbuka untuk posisi fulltime, kontrak, maupun proyek freelance.</p>
+    <div class="section-label"><span class="id">Kontak</span><span class="en">Contact</span></div>
+    <h2><span class="id">Mari Berkolaborasi</span><span class="en">Let's Collaborate</span></h2>
+    <p class="section-subtitle">
+      <span class="id">Terbuka untuk posisi fulltime, kontrak, maupun proyek freelance.</span>
+      <span class="en">Open for full-time roles, contract positions, and freelance projects.</span>
+    </p>
     <div class="contact-grid">
       <div class="contact-text">
-        <p>Apakah Anda sedang mencari developer yang mampu membangun sistem dari database hingga antarmuka, atau berkolaborasi langsung dengan stakeholder non-teknis?</p>
-        <p>Saya terbuka untuk peluang baru dan siap berdiskusi mengenai proyek maupun kebutuhan pengembangan sistem Anda.</p>
+        <span class="id">
+          <p>Apakah Anda sedang mencari developer yang mampu membangun sistem dari database hingga antarmuka, atau berkolaborasi langsung dengan stakeholder non-teknis?</p>
+          <p>Saya terbuka untuk peluang baru dan siap berdiskusi mengenai proyek maupun kebutuhan pengembangan sistem Anda.</p>
+        </span>
+        <span class="en">
+          <p>Are you looking for a developer capable of architecting systems from the database layer to the user interface, or collaborating directly with non-technical stakeholders?</p>
+          <p>I am currently open to new opportunities and ready to discuss your projects or software development needs.</p>
+        </span>
       </div>
       <div class="contact-links">
         <a href="https://github.com/poll44" target="_blank" class="contact-link">
@@ -633,21 +695,36 @@ function closeDrawer() {
   toggle.classList.remove('open');
   drawer.classList.remove('open');
   document.body.style.overflow = '';
-  toggle.setAttribute('aria-expanded', 'false'); // Update status aksesibilitas
+  toggle.setAttribute('aria-expanded', 'false');
 }
 
 toggle.addEventListener('click', () => {
   const isOpen = drawer.classList.toggle('open');
   toggle.classList.toggle('open', isOpen);
   document.body.style.overflow = isOpen ? 'hidden' : '';
-  toggle.setAttribute('aria-expanded', isOpen); // Update status aksesibilitas
+  toggle.setAttribute('aria-expanded', isOpen);
 });
 
-// Close drawer on outside click
 drawer.addEventListener('click', e => { if (e.target === drawer) closeDrawer(); });
-
-// Close on resize back to desktop
 window.addEventListener('resize', () => { if (window.innerWidth > 768) closeDrawer(); });
+
+// Language Toggle Logic
+function setLanguage(lang) {
+  // Set atribut pada html
+  document.documentElement.setAttribute('lang', lang);
+  // Simpan ke local storage
+  localStorage.setItem('faiz-portfolio-lang', lang);
+  
+  // Ubah status tombol aktif
+  document.getElementById('btn-id').classList.toggle('active', lang === 'id');
+  document.getElementById('btn-en').classList.toggle('active', lang === 'en');
+}
+
+// Inisialisasi bahasa saat pertama halaman dimuat
+document.addEventListener('DOMContentLoaded', () => {
+  const savedLang = localStorage.getItem('faiz-portfolio-lang') || 'id'; // Default ke ID
+  setLanguage(savedLang);
+});
 </script>
 </body>
 </html>
