@@ -9,7 +9,8 @@
 *{margin:0;padding:0;box-sizing:border-box}
 :root{
   --bg:#0a0a0f;--bg2:#111118;--bg3:#1a1a24;
-  --text:#f0eefc;--muted:#888897;--accent:#7f77dd;
+  /* Kecerahan --muted dinaikkan sedikit agar rasio kontras lebih baik dan mata tidak cepat lelah */
+  --text:#f0eefc;--muted:#a1a1b2;--accent:#7f77dd;
   --accent2:#5dcaa5;--border:rgba(127,119,221,0.15);
   --card:rgba(255,255,255,0.03);
 }
@@ -26,8 +27,8 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:1rem 0;border-bottom
 .nav-links a{color:var(--muted);text-decoration:none;font-size:0.85rem;font-weight:500;letter-spacing:0.02em;transition:color 0.2s}
 .nav-links a:hover{color:var(--text)}
 
-/* hamburger – hidden on desktop */
-.nav-toggle{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:4px;background:none;border:none}
+/* hamburger – hidden on desktop. Z-index dinaikkan agar tidak tertutup drawer */
+.nav-toggle{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:4px;background:none;border:none;z-index:102;position:relative}
 .nav-toggle span{display:block;width:22px;height:2px;background:var(--text);border-radius:2px;transition:all 0.3s}
 .nav-toggle.open span:nth-child(1){transform:translateY(7px) rotate(45deg)}
 .nav-toggle.open span:nth-child(2){opacity:0}
@@ -139,7 +140,8 @@ h2{font-family:'Syne',sans-serif;font-size:clamp(1.6rem,4vw,2rem);font-weight:70
 footer{border-top:0.5px solid var(--border);padding:2rem 0;text-align:center;color:var(--muted);font-size:0.78rem}
 
 /* ─── REVEAL ─── */
-.reveal{opacity:0;transform:translateY(20px);transition:opacity 0.55s ease,transform 0.55s ease}
+/* Transform ditambahkan ke 35px agar efek animasi scroll lebih terasa dramatis */
+.reveal{opacity:0;transform:translateY(35px);transition:opacity 0.55s ease,transform 0.55s ease}
 .reveal.visible{opacity:1;transform:none}
 
 /* ════════════════════════════════════════
@@ -155,17 +157,18 @@ footer{border-top:0.5px solid var(--border);padding:2rem 0;text-align:center;col
   .nav-links{display:none}
   .nav-toggle{display:flex}
 
-  /* mobile drawer */
+  /* mobile drawer - Z-index diatur ke 101, will-change ditambahkan untuk performa animasi GPU */
   .nav-drawer{
     display:block;
     position:fixed;
     top:0;left:0;right:0;bottom:0;
     background:rgba(10,10,15,0.98);
     backdrop-filter:blur(16px);
-    z-index:99;
+    z-index:101;
     padding:5.5rem 2rem 2rem;
     transform:translateX(100%);
     transition:transform 0.3s cubic-bezier(0.4,0,0.2,1);
+    will-change: transform;
   }
   .nav-drawer.open{transform:translateX(0)}
   .nav-drawer-links{display:flex;flex-direction:column;gap:0.25rem}
@@ -255,7 +258,6 @@ footer{border-top:0.5px solid var(--border);padding:2rem 0;text-align:center;col
 </head>
 <body>
 
-<!-- MOBILE DRAWER -->
 <div class="nav-drawer" id="navDrawer">
   <div class="nav-drawer-links">
     <a href="#about" onclick="closeDrawer()">About</a>
@@ -276,13 +278,12 @@ footer{border-top:0.5px solid var(--border);padding:2rem 0;text-align:center;col
       <a href="#stack">Stack</a>
       <a href="#contact">Contact</a>
     </div>
-    <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false">
       <span></span><span></span><span></span>
     </button>
   </div>
 </nav>
 
-<!-- HERO -->
 <section id="hero">
   <div class="container">
     <div class="hero-tag">Open to opportunities</div>
@@ -291,7 +292,7 @@ footer{border-top:0.5px solid var(--border);padding:2rem 0;text-align:center;col
     <div class="hero-highlights">
       <div class="hero-chip"><b>Laravel</b> · Backend Specialist</div>
       <div class="hero-chip"><b>2</b> Government Systems</div>
-      <div class="hero-chip"><b>3+</b> Professional Projects</div>
+      <div class="hero-chip"><b>4+</b> Professional & Academic Projects</div>
       <div class="hero-chip">Malang, Indonesia</div>
     </div>
     <div class="hero-cta">
@@ -301,10 +302,10 @@ footer{border-top:0.5px solid var(--border);padding:2rem 0;text-align:center;col
   </div>
 </section>
 
-<!-- ABOUT -->
 <section id="about">
   <div class="container reveal">
     <div class="section-label">About</div>
+    <h2>Tentang Saya</h2>
     <div class="divider"></div>
     <div class="about-grid">
       <div class="about-text">
@@ -314,8 +315,8 @@ footer{border-top:0.5px solid var(--border);padding:2rem 0;text-align:center;col
       </div>
       <div class="about-stats">
         <div class="stat-card">
-          <div class="stat-num">3+</div>
-          <div class="stat-label">Professional Projects</div>
+          <div class="stat-num">4+</div>
+          <div class="stat-label">Professional & Academic Projects</div>
         </div>
         <div class="stat-card">
           <div class="stat-num">2</div>
@@ -334,38 +335,12 @@ footer{border-top:0.5px solid var(--border);padding:2rem 0;text-align:center;col
   </div>
 </section>
 
-<!-- EXPERIENCE -->
 <section id="experience">
   <div class="container reveal">
     <div class="section-label">Experience</div>
     <h2>Pengalaman profesional</h2>
     <p class="section-subtitle">Tiga posisi fullstack — dari magang di software house hingga freelance langsung dengan klien pemerintah dan bisnis.</p>
     <div class="exp-list">
-
-      <div class="exp-card">
-        <div class="exp-top">
-          <div class="exp-left">
-            <div class="exp-company">SMARTID</div>
-            <div class="exp-role">Intern Fullstack Developer</div>
-          </div>
-          <div class="exp-right">
-            <div class="exp-period">Agustus – Desember 2025</div>
-            <div class="exp-location">Malang, Indonesia · On-site</div>
-          </div>
-        </div>
-        <ul class="exp-bullets">
-          <li>Mengembangkan Sistem Informasi SIANJAB-ABK untuk Pemerintah Kabupaten Semarang — sistem analisis jabatan dan beban kerja skala organisasi besar.</li>
-          <li>Membangun modul administrasi dan backend menggunakan <strong style="color:var(--text);font-weight:500">Laravel</strong> dan <strong style="color:var(--text);font-weight:500">Filament PHP</strong>.</li>
-          <li>Merancang visualisasi struktur organisasi hierarkis yang dapat dikonfigurasi secara dinamis.</li>
-          <li>Mengoptimalkan kueri PostgreSQL untuk performa dataset organisasi berskala besar.</li>
-        </ul>
-        <div class="exp-chips">
-          <span class="chip">Laravel</span>
-          <span class="chip">Filament PHP</span>
-          <span class="chip">PostgreSQL</span>
-          <span class="chip">REST API</span>
-        </div>
-      </div>
 
       <div class="exp-card">
         <div class="exp-top">
@@ -379,15 +354,39 @@ footer{border-top:0.5px solid var(--border);padding:2rem 0;text-align:center;col
           </div>
         </div>
         <ul class="exp-bullets">
-          <li>Mengembangkan sistem SIPERU (Sistem Informasi Perencanaan dan Evaluasi) dari nol hingga deployment.</li>
-          <li>Merancang arsitektur database relasional dan RESTful API menggunakan <strong style="color:var(--text);font-weight:500">Express.js</strong>.</li>
-          <li>Berkolaborasi langsung dengan pemangku kepentingan pemerintah untuk menerjemahkan kebutuhan operasional ke dalam spesifikasi teknis.</li>
-          <li>Mengimplementasikan antarmuka yang intuitif sesuai alur kerja internal instansi.</li>
+          <li>Membangun sistem SIPERU dari nol menggunakan <strong style="color:var(--text);font-weight:500">Express.js</strong> dan MySQL untuk memecahkan masalah kalkulasi kebutuhan guru PNS/Non-PNS di seluruh sekolah Kabupaten Jombang.</li>
+          <li>Memigrasi proses pengumpulan indikator mutu sekolah yang awalnya berbasis kertas menjadi sistem input digital berbasis web, menyatukannya ke dalam satu database terpusat.</li>
+          <li>Menyediakan fitur pencarian kebutuhan guru yang transparan dan dapat diakses publik/calon guru secara real-time tanpa perlu konfirmasi manual ke masing-masing sekolah.</li>
         </ul>
         <div class="exp-chips">
           <span class="chip">Express.js</span>
           <span class="chip">Node.js</span>
+          <span class="chip">TypeScript</span>
           <span class="chip">MySQL</span>
+          <span class="chip">REST API</span>
+        </div>
+      </div>
+
+      <div class="exp-card">
+        <div class="exp-top">
+          <div class="exp-left">
+            <div class="exp-company">SMARTID</div>
+            <div class="exp-role">Intern Fullstack Developer</div>
+          </div>
+          <div class="exp-right">
+            <div class="exp-period">Agustus – Desember 2025</div>
+            <div class="exp-location">Malang, Indonesia · On-site</div>
+          </div>
+        </div>
+        <ul class="exp-bullets">
+          <li>Berhasil mendigitalisasi proses manual pembuatan peta jabatan dari format Excel konvensional menjadi sistem otomatisasi pohon hierarki organisasi (SIANJAB-ABK) untuk Pemerintah Kabupaten Semarang.</li>
+          <li>Merancang arsitektur database relasional (PostgreSQL) yang fleksibel untuk memetakan berbagai jenis tingkatan jabatan (Fungsional, Pelaksana, Struktural) meskipun dokumen spesifikasi awal dari klien memiliki keterbatasan data.</li>
+          <li>Mengembangkan modul entri data dinamis dan fitur verifikasi bertingkat untuk verifikator menggunakan <strong style="color:var(--text);font-weight:500">Laravel</strong> dan <strong style="color:var(--text);font-weight:500">Filament PHP</strong>, serta menyediakan fitur ekspor laporan Informasi Jabatan ke format Excel.</li>
+        </ul>
+        <div class="exp-chips">
+          <span class="chip">Laravel</span>
+          <span class="chip">Filament PHP</span>
+          <span class="chip">PostgreSQL</span>
           <span class="chip">REST API</span>
         </div>
       </div>
@@ -404,15 +403,17 @@ footer{border-top:0.5px solid var(--border);padding:2rem 0;text-align:center;col
           </div>
         </div>
         <ul class="exp-bullets">
-          <li>Membangun platform e-commerce untuk brand fashion muslim dari tahap perancangan hingga fase development selesai.</li>
-          <li>Mengembangkan fitur manajemen produk, keranjang belanja, pemesanan, dan pengelolaan pengiriman menggunakan <strong style="color:var(--text);font-weight:500">Laravel</strong> dan <strong style="color:var(--text);font-weight:500">Vue.js</strong>.</li>
-          <li>Mengimplementasikan arsitektur frontend yang responsif dengan optimasi SEO.</li>
+          <li>Merancang dan mengembangkan platform e-commerce kustom dari tahap desain hingga siap rilis menggunakan <strong style="color:var(--text);font-weight:500">Laravel</strong> dan <strong style="color:var(--text);font-weight:500">Vue.js</strong> guna memangkas biaya komisi platform pihak ketiga (Selesai hingga tahap development sebelum penyesuaian bisnis klien).</li>
+          <li>Membangun dasbor manajemen konten (CMS) yang adaptif untuk mengatur tata letak banner utama dan pengelompokan produk secara dinamis.</li>
+          <li>Mengintegrasikan gerbang pembayaran Midtrans API dan penghitungan ongkos kirim otomatis via RajaOngkir API.</li>
+          <li>Mengimplementasikan Job Queue untuk pemrosesan asinkron, serta Cache dan CDN guna memastikan stabilitas aplikasi saat menangani 500+ pengguna aktif secara bersamaan.</li>
         </ul>
         <div class="exp-chips">
           <span class="chip">Laravel</span>
           <span class="chip">Vue.js</span>
           <span class="chip">MySQL</span>
-          <span class="chip chip-neutral">SEO</span>
+          <span class="chip chip-neutral">Cache & CDN</span>
+          <span class="chip chip-neutral">Job Queue</span>
         </div>
       </div>
 
@@ -420,7 +421,6 @@ footer{border-top:0.5px solid var(--border);padding:2rem 0;text-align:center;col
   </div>
 </section>
 
-<!-- PROJECTS -->
 <section id="projects">
   <div class="container reveal">
     <div class="section-label">Projects</div>
@@ -439,7 +439,7 @@ footer{border-top:0.5px solid var(--border);padding:2rem 0;text-align:center;col
             <div class="proj-client">Client: Pemerintah Kabupaten Semarang · via SMARTID</div>
           </div>
         </div>
-        <p class="proj-desc">Sistem Analisis Jabatan dan Analisis Beban Kerja (ANJAB-ABK) untuk Pemerintah Kabupaten Semarang. Mengembangkan modul administrasi, visualisasi struktur organisasi hierarkis yang dapat dikonfigurasi secara dinamis, serta optimasi database untuk pengelolaan data organisasi berskala besar.</p>
+        <p class="proj-desc">Mendigitalisasi pembuatan peta jabatan dari Excel konvensional ke sistem otomatisasi hierarki organisasi. Arsitektur data dirancang secara fleksibel untuk mengakomodasi keterbatasan dokumen kebutuhan awal, dilengkapi dengan fitur verifikasi dan ekspor laporan yang akurat.</p>
         <div class="proj-footer">
           <div class="proj-tags">
             <span class="ptag main">Laravel</span>
@@ -461,10 +461,11 @@ footer{border-top:0.5px solid var(--border);padding:2rem 0;text-align:center;col
             <div class="proj-client">Client: Pemerintah Kabupaten Jombang · Freelance</div>
           </div>
         </div>
-        <p class="proj-desc">Sistem Informasi Perencanaan dan Evaluasi yang dikembangkan dari perancangan basis data, implementasi REST API, hingga deployment. Dibangun menggunakan Express.js dengan arsitektur relasional yang mendukung kebutuhan operasional pemerintah daerah.</p>
+        <p class="proj-desc">Sistem Informasi Perencanaan dan Evaluasi untuk digitalisasi borang kertas dan kalkulasi kebutuhan guru secara otomatis. Dibangun dengan fokus pada sentralisasi data dan menyediakan portal transparansi pencarian guru bagi publik secara real-time.</p>
         <div class="proj-footer">
           <div class="proj-tags">
             <span class="ptag main">Express.js</span>
+            <span class="ptag">TypeScript</span>
             <span class="ptag">Node.js</span>
             <span class="ptag">MySQL</span>
             <span class="ptag">REST API</span>
@@ -479,11 +480,11 @@ footer{border-top:0.5px solid var(--border);padding:2rem 0;text-align:center;col
               <span class="pbadge pb-iot">IoT · Cloud · Computer Vision</span>
             </div>
             <div class="proj-title">Vision-Based Smart Parking System</div>
-            <div class="proj-client">Proyek lintas bidang · Web + Hardware + Cloud</div>
+            <div class="proj-client">Proyek Akademik · Web + Hardware + Cloud</div>
           </div>
           <a href="https://filkom.ub.ac.id/project/2025/06/vision-based-smart-parking-system/" target="_blank" class="proj-link-btn">Lihat →</a>
         </div>
-        <p class="proj-desc">Sistem deteksi parkir cerdas berbasis computer vision menggunakan ESP32 dan kamera sebagai sensor hardware. Website dashboard real-time dibangun dengan Laravel dan React, data disimpan di DynamoDB, dan seluruh infrastruktur dihosting di AWS.</p>
+        <p class="proj-desc">Sistem deteksi area parkir pintar berbasis IoT dan Computer Vision. Menggunakan ESP32-Cam untuk menangkap kondisi riil, memproses ketersediaan ruang, dan mengirimkan data ke backend API Laravel melalui HTTP POST. Data disajikan secara real-time pada dasbor antarmuka berbasis React.</p>
         <div class="proj-footer">
           <div class="proj-tags">
             <span class="ptag main">Laravel</span>
@@ -506,7 +507,7 @@ footer{border-top:0.5px solid var(--border);padding:2rem 0;text-align:center;col
             <div class="proj-client">Client: CANAFA Fashion · Freelance</div>
           </div>
         </div>
-        <p class="proj-desc">Platform e-commerce untuk brand fashion muslim. Bertanggung jawab penuh pada pengembangan frontend dan backend — mencakup manajemen produk, keranjang belanja, checkout, dan pengelolaan pesanan. Proyek diselesaikan hingga fase development; deployment tidak dilanjutkan atas pertimbangan bisnis klien.</p>
+        <p class="proj-desc">Platform e-commerce kustom dengan integrasi Midtrans dan RajaOngkir. Dirancang untuk high-traffic menggunakan arsitektur Job Queue, Cache, dan CDN. Proyek diselesaikan hingga fase Production-Ready Development sebagai solusi pemangkasan biaya admin platform pihak ketiga.</p>
         <div class="proj-footer">
           <div class="proj-tags">
             <span class="ptag main">Laravel</span>
@@ -521,7 +522,6 @@ footer{border-top:0.5px solid var(--border);padding:2rem 0;text-align:center;col
   </div>
 </section>
 
-<!-- STACK -->
 <section id="stack">
   <div class="container reveal">
     <div class="section-label">Tech Stack</div>
@@ -567,7 +567,6 @@ footer{border-top:0.5px solid var(--border);padding:2rem 0;text-align:center;col
   </div>
 </section>
 
-<!-- CONTACT -->
 <section id="contact">
   <div class="container reveal">
     <div class="section-label">Contact</div>
@@ -581,7 +580,7 @@ footer{border-top:0.5px solid var(--border);padding:2rem 0;text-align:center;col
       <div class="contact-links">
         <a href="https://github.com/poll44" target="_blank" class="contact-link">
           <div class="cl-icon cl-gh">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0112 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/></svg>
+            <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0112 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/></svg>
           </div>
           <div class="cl-text">
             <div class="cl-name">GitHub</div>
@@ -590,7 +589,7 @@ footer{border-top:0.5px solid var(--border);padding:2rem 0;text-align:center;col
         </a>
         <a href="https://www.linkedin.com/in/faiz-ihsan-akram-b5b83028a/" target="_blank" class="contact-link">
           <div class="cl-icon cl-li">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="#0a66c2"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+            <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="#0a66c2"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
           </div>
           <div class="cl-text">
             <div class="cl-name">LinkedIn</div>
@@ -599,7 +598,7 @@ footer{border-top:0.5px solid var(--border);padding:2rem 0;text-align:center;col
         </a>
         <a href="mailto:faiz.ihsan.akram@gmail.com" class="contact-link">
           <div class="cl-icon cl-em">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
           </div>
           <div class="cl-text">
             <div class="cl-name">Email</div>
@@ -629,18 +628,24 @@ document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
 // Hamburger menu
 const toggle = document.getElementById('navToggle');
 const drawer = document.getElementById('navDrawer');
+
 function closeDrawer() {
   toggle.classList.remove('open');
   drawer.classList.remove('open');
   document.body.style.overflow = '';
+  toggle.setAttribute('aria-expanded', 'false'); // Update status aksesibilitas
 }
+
 toggle.addEventListener('click', () => {
   const isOpen = drawer.classList.toggle('open');
   toggle.classList.toggle('open', isOpen);
   document.body.style.overflow = isOpen ? 'hidden' : '';
+  toggle.setAttribute('aria-expanded', isOpen); // Update status aksesibilitas
 });
+
 // Close drawer on outside click
 drawer.addEventListener('click', e => { if (e.target === drawer) closeDrawer(); });
+
 // Close on resize back to desktop
 window.addEventListener('resize', () => { if (window.innerWidth > 768) closeDrawer(); });
 </script>
